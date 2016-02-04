@@ -10,7 +10,8 @@ var ele = document.getElementById("bottom-wrapper");
 var el = document.getElementById("js");
 
 // Set BeerOClock time
-var beerOClock = 17;
+var beerOClockHour = '19';
+var beerOClockMin = '39';
 
 // Array with the weekdays
 var dayName = [
@@ -36,13 +37,12 @@ function getActuallTime(){
   var hours = setZeroValue(newDate.getHours()); //INT
   var minutes = setZeroValue(newDate.getMinutes()); //INT
 
-  // how many minutes until 16:00 Uhr
-  var timeLeft = setZeroValue((beerOClock - 1) - hours)+':'+setZeroValue(59 - minutes)+':'+setZeroValue(59 - seconds); //INT
-
+  var timeLeft = setZeroValue(parseInt((beerOClockHour) - hours))+':'+setZeroValue(parseInt(beerOClockMin - minutes))+':'+setZeroValue(59 - seconds); //INT
   return  {timeLeft:timeLeft, hours:hours, minutes:minutes};
 
-}
 
+}
+console.log(getActuallTime().timeLeft);
 function setZeroValue(i) {
     if (i < 10) {
       i = "0" + i;
@@ -54,7 +54,7 @@ function setZeroValue(i) {
 function howMuchPercent(){
   var hoursMinutes = [getActuallTime().hours, getActuallTime().minutes];
   var fullTime = hoursMinutes.join('');
-  var percentage = (fullTime / ((beerOClock - 1) + '60') * 100) | 0;
+  var percentage = ((fullTime / (beerOClockHour + beerOClockMin)) * 100) | 0;
 
   if(percentage >= 100){
     return '100%';
@@ -77,13 +77,18 @@ function BeerOclock(){
     notFridayButBeerTime: 'Time for beer! Have a nice evening and see you tomorrow.'
   };
 
-  if(getActuallTime().hours >= beerOClock && actuallDay == 'Friday'){
+  var hoursMinutes = [getActuallTime().hours, getActuallTime().minutes];
+  var time = hoursMinutes.join('');
+
+  var beer = beerOClockHour + beerOClockMin;
+
+  if(time >= beer && actuallDay == 'Friday'){
     e.innerHTML = message.itsFridayAndBeerTime;
-  }else if (getActuallTime().hours >= beerOClock && actuallDay != 'Friday') {
+  }else if (time >= beer && actuallDay != 'Friday') {
     e.innerHTML = message.notFridayButBeerTime;
-  }else if(getActuallTime().hours <= beerOClock && actuallDay == 'Friday') {
+  }else if(time <= beer && actuallDay == 'Friday') {
     e.innerHTML = message.itsFriday;
-  }else if(getActuallTime().hours <= beerOClock && actuallDay != 'Friday') {
+  }else if(time <= beer && actuallDay != 'Friday') {
       e.innerHTML = message.notFriday;
   }
 
