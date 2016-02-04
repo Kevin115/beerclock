@@ -1,13 +1,9 @@
 {
-  "name": "om-landingpage",
+  "name": "BeerOclock",
   "version": "1.0.0",
-  "scripts": {
-    "start": "grunt build",
-    "postinstall": "gem install sass || echo \"Please install Ruby & Bundler.\""
-  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Jimdo/landingpages.git"
+    "url": "git+https://github.com/Kevin115/beerclock.git"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
