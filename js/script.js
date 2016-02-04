@@ -10,8 +10,8 @@ var ele = document.getElementById("bottom-wrapper");
 var el = document.getElementById("js");
 
 // Set BeerOClock time
-var beerOClockHour = '19';
-var beerOClockMin = '39';
+var beerOClockHour = '17';
+var beerOClockMin = '09';
 
 // Array with the weekdays
 var dayName = [
@@ -37,7 +37,7 @@ function getActuallTime(){
   var hours = setZeroValue(newDate.getHours()); //INT
   var minutes = setZeroValue(newDate.getMinutes()); //INT
 
-  var timeLeft = setZeroValue(parseInt((beerOClockHour) - hours))+':'+setZeroValue(parseInt(beerOClockMin - minutes))+':'+setZeroValue(59 - seconds); //INT
+  var timeLeft = setZeroValue(parseInt((beerOClockHour) - hours))+':'+setZeroValue(parseInt(beerOClockMin - minutes) - 01)+':'+setZeroValue(59 - seconds); //INT
   return  {timeLeft:timeLeft, hours:hours, minutes:minutes};
 
 
