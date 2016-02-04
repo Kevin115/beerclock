@@ -6,9 +6,11 @@ var d = new Date();
 
 // Elemeny to add text
 var e = document.getElementById("headline-wrapper__content");
+var ele = document.getElementById("bottom-wrapper");
+var el = document.getElementById("js");
 
 // Set BeerOClock time
-var beerOClock = 16;
+var beerOClock = 17;
 
 // Array with the weekdays
 var dayName = [
@@ -52,7 +54,7 @@ function setZeroValue(i) {
 function howMuchPercent(){
   var hoursMinutes = [getActuallTime().hours, getActuallTime().minutes];
   var fullTime = hoursMinutes.join('');
-  var percentage = (fullTime / ((beerOClock - 1) + '59') * 100) | 0;
+  var percentage = (fullTime / ((beerOClock - 1) + '60') * 100) | 0;
 
   if(percentage >= 100){
     return '100%';
@@ -85,11 +87,9 @@ function BeerOclock(){
       e.innerHTML = message.notFriday;
   }
 
-  var ele = document.getElementById("bottom-wrapper");
-  var el = document.getElementById("js");
 
   el.style.width = howMuchPercent();
-  ele.innerHTML = howMuchPercent();
+  el.innerHTML = howMuchPercent();
 
   setTimeout(BeerOclock, 1000);
 }
