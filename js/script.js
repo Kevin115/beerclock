@@ -8,7 +8,7 @@ var d = new Date();
 var e = document.getElementById("headline-wrapper__content");
 
 // Set BeerOClock time
-var beerOClock = 15;
+var beerOClock = 16;
 
 // Array with the weekdays
 var dayName = [
@@ -53,7 +53,12 @@ function howMuchPercent(){
   var hoursMinutes = [getActuallTime().hours, getActuallTime().minutes];
   var fullTime = hoursMinutes.join('');
   var percentage = (fullTime / ((beerOClock - 1) + '59') * 100) | 0;
-  return percentage + '%';
+
+  if(percentage >= 100){
+    return '100%';
+  } else {
+    return percentage + '%';
+  }
 
 }
 
