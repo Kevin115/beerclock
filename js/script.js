@@ -5,9 +5,8 @@
 var d = new Date();
 
 // Elemeny to add text
-var e = document.getElementById("headline-wrapper__content");
-var ele = document.getElementById("bottom-wrapper");
-var el = document.getElementById("js");
+var countdownContent = document.getElementById("js-content-wrapper__paragraph");
+var el = document.getElementById("js-percentage-wrapper__bar");
 
 // Set BeerOClock time
 var beerOClockHour = '15';
@@ -26,6 +25,7 @@ var dayName = [
 
 // Save actuall day in variable
 var actuallDay = dayName[d.getDay()];
+
 
 //######################################################################
 // Functions
@@ -75,7 +75,7 @@ function BeerOclock(){
   // Object with messages
   var message = {
     // Its beer day but not 16 uhr yet
-    itsFriday: 'Get your beer game on, it is friday! Only '+ getCurrentTime().timeLeft +  ' left until beer time!',
+    itsFriday: 'Get your beer game on, it is friday! <br />It is almost time for beer!!<br /> <span>' + getCurrentTime().timeLeft + '</span>',
     notFriday: 'It is not friday, but who cares? Only '+ getCurrentTime().timeLeft + ' left until beer time!',
     // Its friday or a different day and 16 uhr
     itsFridayAndBeerTime: 'Time for beer! Have a nice weekend people!',
@@ -88,22 +88,26 @@ function BeerOclock(){
   var beerTime = beerOClockHour + beerOClockMin;
 
   if(fullTime >= beerTime && actuallDay == 'Friday'){
-    e.innerHTML = message.itsFridayAndBeerTime;
+    countdownContent.innerHTML = message.itsFridayAndBeerTime;
   }else if (fullTime >= beerTime && actuallDay != 'Friday') {
-    e.innerHTML = message.notFridayButBeerTime;
+    countdownContent.innerHTML = message.notFridayButBeerTime;
   }else if(fullTime <= beerTime && actuallDay == 'Friday') {
-    e.innerHTML = message.itsFriday;
+    countdownContent.innerHTML = message.itsFriday;
   }else if(fullTime <= beerTime && actuallDay != 'Friday') {
-      e.innerHTML = message.notFriday;
+    countdownContent.innerHTML = message.notFriday;
   }
+
+  var beerBottleGrey = document.getElementById("js-content-wrapper_beer-bottle__grey");
+  var beerBottleColor = document.getElementById("js-content-wrapper_beer-bottle__color");
+
+  beerBottleGrey.style.height = howMuchPercent();
+  beerBottleColor.style.height = howMuchPercent();
 
   el.style.width = howMuchPercent();
   el.innerHTML = howMuchPercent();
 
   setTimeout(BeerOclock, 1000);
 }
-
-
 
 //######################################################################
 // Start Functions onLoad
