@@ -10,8 +10,8 @@ var ele = document.getElementById("bottom-wrapper");
 var el = document.getElementById("js");
 
 // Set BeerOClock time
-var beerOClockHour = '17';
-var beerOClockMin = '09';
+var beerOClockHour = '15';
+var beerOClockMin = '60';
 
 // Array with the weekdays
 var dayName = [
@@ -33,16 +33,21 @@ var actuallDay = dayName[d.getDay()];
 
 function getActuallTime(){
   var newDate = new Date();
-  var seconds = setZeroValue(newDate.getSeconds()); //INT
-  var hours = setZeroValue(newDate.getHours()); //INT
-  var minutes = setZeroValue(newDate.getMinutes()); //INT
+  var seconds = newDate.getSeconds(); //INT
+  var hours = newDate.getHours(); //INT
+  var minutes = newDate.getMinutes(); //INT
 
-  var timeLeft = setZeroValue(parseInt((beerOClockHour) - hours))+':'+setZeroValue(parseInt(beerOClockMin - minutes) - 01)+':'+setZeroValue(59 - seconds); //INT
+  var minutesLeft;
+  var hoursLeft;
+  var secondsLeft = setZeroValue(59 - seconds);
+
+  beerOClockMin >= minutes ? minutesLeft = setZeroValue((beerOClockMin - minutes) - 1)  : minutesLeft = setZeroValue( 59 - (minutes - beerOClockMin));
+  beerOClockHour >= hours ? hoursLeft = setZeroValue(beerOClockHour - hours) : hoursLeft = setZeroValue( 23 - (hours - beerOClockHour));
+
+  var timeLeft = hoursLeft+':'+minutesLeft+':'+secondsLeft; //INT
   return  {timeLeft:timeLeft, hours:hours, minutes:minutes};
 
-
 }
-console.log(getActuallTime().timeLeft);
 function setZeroValue(i) {
     if (i < 10) {
       i = "0" + i;
@@ -79,7 +84,6 @@ function BeerOclock(){
 
   var hoursMinutes = [getActuallTime().hours, getActuallTime().minutes];
   var time = hoursMinutes.join('');
-
   var beer = beerOClockHour + beerOClockMin;
 
   if(time >= beer && actuallDay == 'Friday'){
