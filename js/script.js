@@ -31,11 +31,13 @@ var actuallDay = dayName[d.getDay()];
 // Functions
 //######################################################################
 
-function getActuallTime(){
+// get the current time and check how much time
+// is left until beerOclock.
+function getCurrentTime(){
   var newDate = new Date();
-  var seconds = newDate.getSeconds(); //INT
-  var hours = newDate.getHours(); //INT
-  var minutes = newDate.getMinutes(); //INT
+  var seconds = newDate.getSeconds();
+  var hours = newDate.getHours();
+  var minutes = newDate.getMinutes();
 
   var minutesLeft;
   var hoursLeft;
@@ -44,58 +46,56 @@ function getActuallTime(){
   beerOClockMin >= minutes ? minutesLeft = setZeroValue((beerOClockMin - minutes) - 1)  : minutesLeft = setZeroValue( 59 - (minutes - beerOClockMin));
   beerOClockHour >= hours ? hoursLeft = setZeroValue(beerOClockHour - hours) : hoursLeft = setZeroValue( 23 - (hours - beerOClockHour));
 
-  var timeLeft = hoursLeft+':'+minutesLeft+':'+secondsLeft; //INT
+  var timeLeft = hoursLeft+':'+minutesLeft+':'+secondsLeft;
   return  {timeLeft:timeLeft, hours:hours, minutes:minutes};
 
 }
+
+// add 0 to current time value if it is below 10
 function setZeroValue(i) {
-    if (i < 10) {
+    if(i < 10) {
       i = "0" + i;
     }
-
     return i;
 }
 
+// get percentage till beerOclock
 function howMuchPercent(){
-  var hoursMinutes = [getActuallTime().hours, getActuallTime().minutes];
+  var hoursMinutes = [setZeroValue(getCurrentTime().hours), setZeroValue(getCurrentTime().minutes)];
   var fullTime = hoursMinutes.join('');
-  var percentage = ((fullTime / (beerOClockHour + beerOClockMin)) * 100) | 0;
+  var percentage = (fullTime / (beerOClockHour + beerOClockMin)) * 100 | 0;
 
-  if(percentage >= 100){
-    return '100%';
-  } else {
-    return percentage + '%';
-  }
-
+  return percentage >= 100 ? '100%' : percentage + '%';
 }
 
-// Functions: check if its beer o'clock
+
+// checks if its beer o'clock
 function BeerOclock(){
 
   // Object with messages
   var message = {
     // Its beer day but not 16 uhr yet
-    itsFriday: 'Get your beer game on, it is friday! Only '+ getActuallTime().timeLeft +  ' left until beer time!',
-    notFriday: 'It is not friday, but who cares? Only '+ getActuallTime().timeLeft + ' left until beer time!',
+    itsFriday: 'Get your beer game on, it is friday! Only '+ getCurrentTime().timeLeft +  ' left until beer time!',
+    notFriday: 'It is not friday, but who cares? Only '+ getCurrentTime().timeLeft + ' left until beer time!',
     // Its friday or a different day and 16 uhr
     itsFridayAndBeerTime: 'Time for beer! Have a nice weekend people!',
     notFridayButBeerTime: 'Time for beer! Have a nice evening and see you tomorrow.'
   };
 
-  var hoursMinutes = [getActuallTime().hours, getActuallTime().minutes];
-  var time = hoursMinutes.join('');
-  var beer = beerOClockHour + beerOClockMin;
+  // get current time stamp
+  var hoursMinutes = [setZeroValue(getCurrentTime().hours), setZeroValue(getCurrentTime().minutes)];
+  var fullTime = hoursMinutes.join('');
+  var beerTime = beerOClockHour + beerOClockMin;
 
-  if(time >= beer && actuallDay == 'Friday'){
+  if(fullTime >= beerTime && actuallDay == 'Friday'){
     e.innerHTML = message.itsFridayAndBeerTime;
-  }else if (time >= beer && actuallDay != 'Friday') {
+  }else if (fullTime >= beerTime && actuallDay != 'Friday') {
     e.innerHTML = message.notFridayButBeerTime;
-  }else if(time <= beer && actuallDay == 'Friday') {
+  }else if(fullTime <= beerTime && actuallDay == 'Friday') {
     e.innerHTML = message.itsFriday;
-  }else if(time <= beer && actuallDay != 'Friday') {
+  }else if(fullTime <= beerTime && actuallDay != 'Friday') {
       e.innerHTML = message.notFriday;
   }
-
 
   el.style.width = howMuchPercent();
   el.innerHTML = howMuchPercent();
