@@ -9,8 +9,8 @@ var countdownContent = document.getElementById("js-content-wrapper__paragraph");
 var el = document.getElementById("js-percentage-wrapper__bar");
 
 // Set BeerOClock time
-var beerOClockHour = '15';
-var beerOClockMin = '60';
+var beerOClockHour = '23';
+var beerOClockMin = '15';
 
 // Array with the weekdays
 var dayName = [
@@ -43,8 +43,8 @@ function getCurrentTime(){
   var hoursLeft;
   var secondsLeft = setZeroValue(59 - seconds);
 
-  beerOClockMin >= minutes ? minutesLeft = setZeroValue((beerOClockMin - minutes) - 1)  : minutesLeft = setZeroValue( 59 - (minutes - beerOClockMin));
-  beerOClockHour >= hours ? hoursLeft = setZeroValue(beerOClockHour - hours) : hoursLeft = setZeroValue( 23 - (hours - beerOClockHour));
+  beerOClockMin > minutes ? minutesLeft = setZeroValue((beerOClockMin - minutes) - 1)  : minutesLeft = setZeroValue( 59 - (minutes - beerOClockMin));
+  beerOClockHour > hours ? hoursLeft = setZeroValue(beerOClockHour - hours) : hoursLeft = setZeroValue( 23 - (hours - beerOClockHour));
 
   var timeLeft = hoursLeft+':'+minutesLeft+':'+secondsLeft;
   return  {timeLeft:timeLeft, hours:hours, minutes:minutes};
@@ -100,11 +100,12 @@ function BeerOclock(){
   var beerBottleGrey = document.getElementById("js-content-wrapper_beer-bottle__grey");
   var beerBottleColor = document.getElementById("js-content-wrapper_beer-bottle__color");
 
-  beerBottleGrey.style.height = howMuchPercent();
+  var o = howMuchPercent().replace('%', '');
+  beerBottleGrey.style.height = (100 - o) + '%';
   beerBottleColor.style.height = howMuchPercent();
 
   el.style.width = howMuchPercent();
-  el.innerHTML = howMuchPercent();
+  //el.innerHTML = howMuchPercent();
 
   setTimeout(BeerOclock, 1000);
 }
@@ -114,3 +115,18 @@ function BeerOclock(){
 //######################################################################
 
 BeerOclock();
+
+//#########################################
+// JUST FOR THE DEMO
+// open/close on click logic
+//#########################################
+
+$(".hamburger-icon-wrapper").click(function() {
+  if ($(this).hasClass("isActiveIcon")) {
+    $(".slide-in-bar").removeClass("isActiveBar");
+    $(this).removeClass("isActiveIcon");
+  } else {
+    $(this).addClass("isActiveIcon");
+    $(".slide-in-bar").addClass("isActiveBar");
+  }
+});

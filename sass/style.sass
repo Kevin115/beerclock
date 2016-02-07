@@ -13,27 +13,25 @@ body
 
     h1
         font-size: 47px
-        display: block
-        line-height: 1.4em
 
     p
         font-size: 22px
         line-height: 1.6em
 
         span
-            font-size: 27px
+            font-size: 36px
             font-weight: bold
             margin: 30px 0
             display: block
 
     .content-wrapper_beer-bottle
-        height: 596px
+        height: 300px
         width: 100%
         position: relative
 
         .content-wrapper_beer-bottle__grey
             background-image: url("img/beer-grey.png")
-            background-size: 50%
+            background-size: 25%
             background-position: top center
             background-repeat: no-repeat
             width: 100%
@@ -42,7 +40,7 @@ body
 
         .content-wrapper_beer-bottle__color
             background-image: url("img/beer-color.png")
-            background-size: 50%
+            background-size: 25%
             background-position: bottom center
             background-repeat: no-repeat
             width: 100%
@@ -61,5 +59,99 @@ body
 
     .percentage-wrapper__bar
         background: darken(#27ae60, 30%)
-        padding: 22px 15px
+        padding: 5px 15px
         box-sizing: border-box
+
+//#########################################
+// Variables
+//#########################################
+
+// Color Of Hamburger Lines
+$borderColor: white
+
+// Width of Navigation
+$navWidth: 350px
+
+// Icon Size In Width And Height
+// Standard: 45px
+$iconSize: 34px
+
+// Transition Speed
+$transitionSpeed: .5s
+
+//#########################################
+// Styles
+//#########################################
+
+// The Wrapper
+.hamburger-icon-wrapper
+    height: $iconSize
+    width: $iconSize
+    position: absolute
+    cursor: pointer
+    top: 20px
+    right: 20px
+    transition: all $transitionSpeed ease-in-out
+
+    // Hamburger Icon Lines
+    span
+        width: $iconSize
+        height: $iconSize / 8
+        background-color: $borderColor
+        position: absolute
+        top: 44%
+        transition: all $transitionSpeed ease-in-out
+
+        &:before,
+        &:after
+            content: ""
+            width: $iconSize
+            height: $iconSize / 8
+            background-color: $borderColor
+            position: absolute
+            transition: all $transitionSpeed ease-in-out
+
+        &:before
+            bottom: 240%
+
+        &:after
+            top: 240%
+
+// Dropwdown Bar
+.slide-in-bar
+    width: 100%
+    background-color: rgba(0,0,0,1)
+    position: absolute
+    transform: translate3d(0, -200px, 0)
+    transition: all $transitionSpeed ease-in-out
+    overflow: auto
+    top: 0
+
+    // Dropdown Bar Navigation
+    .slide-in-bar__nav
+        margin: 0 auto
+
+        li
+            display: inline-block
+            padding: 25px 10px
+            box-sizing: border-box
+            text-align: center
+
+// Active State Dropdown Bar
+.isActiveBar
+    transform: translate3d(0, 0, 0)
+
+// Active State Icon
+.isActiveIcon
+    //top: $navWidth + 20px
+    span
+        background-color: transparent
+        -webkit-transform: rotate(180deg)
+
+        &:after
+            -webkit-transform: rotate(-45deg)
+            top: 0
+
+        &:before
+            -webkit-transform: rotate(45deg)
+            bottom: 0
