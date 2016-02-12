@@ -131,6 +131,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('default', 'Watches the project for changes, automatically builds them and runs a server.', ['clean', 'copy:build', 'sass', 'browserify', 'connect', 'watch' ]);
   grunt.registerTask('build', 'Builds all the assets you need to put on the remote server.', ['clean', 'copy:build', 'sass', 'browserify']);
-  grunt.registerTask('release', 'Builds all the assets you need to put on the remote server.', ['clean', 'copy:build', 'sass', 'browserify', 'ftp_push',]);
+  grunt.registerTask('deploy', 'Builds all the assets you need to put on the remote server.', ['clean', 'copy:build', 'sass', 'browserify', 'ftp_push',]);
 
 };
