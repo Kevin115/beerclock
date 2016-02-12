@@ -1,18 +1,53 @@
 //######################################################################
 // Global Variables
 //######################################################################
-// create date
+
+/**
+ * @type {Object}
+ */
 var d = new Date();
 
-// Elemeny to add text
-var countdownContent = document.getElementById("js-content-wrapper__paragraph");
-var el = document.getElementById("js-percentage-wrapper__bar");
+/**
+ * @const
+ * @type {String}
+ */
+var beerOClockHour = '17';
 
-// Set BeerOClock time
-var beerOClockHour = '23';
-var beerOClockMin = '15';
+/**
+ * @const
+ * @type {String}
+ */
+var beerOClockMin = '00';
 
-// Array with the weekdays
+/**
+ * @const
+ * @type {String}
+ */
+var SELECTOR_COUNTDOWN_CONTAINER = document.getElementById("js-content-wrapper__paragraph");
+
+/**
+ * @const
+ * @type {String}
+ */
+var SELECTOR_PERCENTAGE_CONTAINER = document.getElementById("js-percentage-wrapper__bar");
+
+/**
+ * @const
+ * @type {String}
+ */
+var SELECTOR_BOTTLE_INACTIVE = document.getElementById("js-content-wrapper_beer-bottle__grey");
+
+/**
+ * @const
+ * @type {String}
+ */
+var SELECTOR_BOTTLE_ACTIVE = document.getElementById("js-content-wrapper_beer-bottle__color");
+
+
+/**
+ * @const
+ * @type {Array}
+ */
 var dayName = [
   'Sunday',
   'Monday',
@@ -23,89 +58,108 @@ var dayName = [
   'Saturday'
 ];
 
-// Save actuall day in variable
+/**
+ * @const
+ * @type {String}
+ */
 var actuallDay = dayName[d.getDay()];
 
-
-//######################################################################
-// Functions
-//######################################################################
-
-// get the current time and check how much time
-// is left until beerOclock.
+/**
+ *
+ * Gets the current time and checks how much time
+ * is left until BeerOclock.
+ *
+ * @type {Function, Object}
+ *
+ */
 function getCurrentTime(){
-  var newDate = new Date();
-  var seconds = newDate.getSeconds();
-  var hours = newDate.getHours();
-  var minutes = newDate.getMinutes();
+    var newDate = new Date();
+    var seconds = newDate.getSeconds();
+    var hours = newDate.getHours();
+    var minutes = newDate.getMinutes();
 
-  var minutesLeft;
-  var hoursLeft;
-  var secondsLeft = setZeroValue(59 - seconds);
+    var minutesLeft;
+    var hoursLeft;
+    var secondsLeft = setZeroValue(59 - seconds);
 
-  beerOClockMin > minutes ? minutesLeft = setZeroValue((beerOClockMin - minutes) - 1)  : minutesLeft = setZeroValue( 59 - (minutes - beerOClockMin));
-  beerOClockHour > hours ? hoursLeft = setZeroValue(beerOClockHour - hours) : hoursLeft = setZeroValue( 23 - (hours - beerOClockHour));
+    beerOClockMin > minutes ? minutesLeft = setZeroValue((beerOClockMin - minutes) - 1)  : minutesLeft = setZeroValue( 59 - (minutes - beerOClockMin));
+    beerOClockHour > hours ? hoursLeft = setZeroValue((beerOClockHour - hours) - 1) : hoursLeft = setZeroValue( 23 - (hours - beerOClockHour));
 
-  var timeLeft = hoursLeft+':'+minutesLeft+':'+secondsLeft;
-  return  {timeLeft:timeLeft, hours:hours, minutes:minutes};
+    var timeLeft = hoursLeft+':'+minutesLeft+':'+secondsLeft;
+    return  {timeLeft:timeLeft, hours:hours, minutes:minutes};
 
 }
 
-// add 0 to current time value if it is below 10
+/**
+ *
+ * Checks if the time (hours || minutes || seconds)
+ * is < 10 and ads a 0 to it if its true
+ *
+ * @type {Function, undifiend}
+ *
+ */
 function setZeroValue(i) {
     if(i < 10) {
-      i = "0" + i;
+        i = "0" + i;
     }
     return i;
 }
 
-// get percentage till beerOclock
+/**
+ *
+ * Checks how much percent is left unitl BeerOclock
+ *
+ * @type {Function, String}
+ *
+ */
 function howMuchPercent(){
-  var hoursMinutes = [setZeroValue(getCurrentTime().hours), setZeroValue(getCurrentTime().minutes)];
-  var fullTime = hoursMinutes.join('');
-  var percentage = (fullTime / (beerOClockHour + beerOClockMin)) * 100 | 0;
+    var hoursMinutes = [setZeroValue(getCurrentTime().hours), setZeroValue(getCurrentTime().minutes)].join('');
+    var percentage = (hoursMinutes / (beerOClockHour + beerOClockMin)) * 100 | 0;
 
-  return percentage >= 100 ? '100%' : percentage + '%';
+    return percentage >= 100 ? '100%' : percentage + '%';
 }
 
 
-// checks if its beer o'clock
+/**
+ *
+ * Checks how much percent is left unitl BeerOclock
+ *
+ * @type {Function, undifiend}
+ *
+ */
 function BeerOclock(){
 
-  // Object with messages
-  var message = {
-    // Its beer day but not 16 uhr yet
-    itsFriday: 'Get your beer game on, it is friday! <br />It is almost time for beer!!<br /> <span>' + getCurrentTime().timeLeft + '</span>',
-    notFriday: 'It is not friday, but who cares? Only '+ getCurrentTime().timeLeft + ' left until beer time!',
-    // Its friday or a different day and 16 uhr
-    itsFridayAndBeerTime: 'Time for beer! Have a nice weekend people!',
-    notFridayButBeerTime: 'Time for beer! Have a nice evening and see you tomorrow.'
-  };
+    /**
+     * @type {Object}
+     */
+    var message = {
+        itsFriday: 'Get your beer game on, it is friday! <br />It is almost time for beer!!<br /> <span>' + getCurrentTime().timeLeft + '</span>',
+        notFriday: 'It is not friday, but who cares? Only '+ getCurrentTime().timeLeft + ' left until beer time!',
+        itsFridayAndBeerTime: 'Time for beer! Have a nice weekend people!',
+        notFridayButBeerTime: 'Time for beer! Have a nice evening and see you tomorrow.'
+    };
 
   // get current time stamp
-  var hoursMinutes = [setZeroValue(getCurrentTime().hours), setZeroValue(getCurrentTime().minutes)];
-  var fullTime = hoursMinutes.join('');
+  var hoursMinutes = [setZeroValue(getCurrentTime().hours), setZeroValue(getCurrentTime().minutes)].join('');
   var beerTime = beerOClockHour + beerOClockMin;
 
-  if(fullTime >= beerTime && actuallDay == 'Friday'){
-    countdownContent.innerHTML = message.itsFridayAndBeerTime;
-  }else if (fullTime >= beerTime && actuallDay != 'Friday') {
-    countdownContent.innerHTML = message.notFridayButBeerTime;
-  }else if(fullTime <= beerTime && actuallDay == 'Friday') {
-    countdownContent.innerHTML = message.itsFriday;
-  }else if(fullTime <= beerTime && actuallDay != 'Friday') {
-    countdownContent.innerHTML = message.notFriday;
+  if(hoursMinutes >= beerTime && actuallDay == 'Friday'){
+    SELECTOR_COUNTDOWN_CONTAINER.innerHTML = message.itsFridayAndBeerTime;
+  }else if (hoursMinutes >= beerTime && actuallDay != 'Friday') {
+    SELECTOR_COUNTDOWN_CONTAINER.innerHTML = message.notFridayButBeerTime;
+  }else if(hoursMinutes <= beerTime && actuallDay == 'Friday') {
+    SELECTOR_COUNTDOWN_CONTAINER.innerHTML = message.itsFriday;
+  }else if(hoursMinutes <= beerTime && actuallDay != 'Friday') {
+    SELECTOR_COUNTDOWN_CONTAINER.innerHTML = message.notFriday;
   }
 
-  var beerBottleGrey = document.getElementById("js-content-wrapper_beer-bottle__grey");
-  var beerBottleColor = document.getElementById("js-content-wrapper_beer-bottle__color");
 
   var o = howMuchPercent().replace('%', '');
-  beerBottleGrey.style.height = (100 - o) + '%';
-  beerBottleColor.style.height = howMuchPercent();
+  SELECTOR_BOTTLE_INACTIVE.style.height = (100 - o) + '%';
+  SELECTOR_BOTTLE_ACTIVE.style.height = howMuchPercent();
 
-  el.style.width = howMuchPercent();
-  //el.innerHTML = howMuchPercent();
+  SELECTOR_PERCENTAGE_CONTAINER.style.width = howMuchPercent();
+  //SELECTOR_PERCENTAGE_CONTAINER.innerHTML = howMuchPercent();
 
   setTimeout(BeerOclock, 1000);
 }
