@@ -1,6 +1,4 @@
-//######################################################################
-// Global Variables
-//######################################################################
+ "use strict"
 
 /**
  * @type {Object}
@@ -87,7 +85,6 @@ function getCurrentTime(){
 
     var timeLeft = hoursLeft+':'+minutesLeft+':'+secondsLeft;
     return  {timeLeft:timeLeft, hours:hours, minutes:minutes};
-
 }
 
 /**
@@ -115,10 +112,8 @@ function setZeroValue(i) {
 function howMuchPercent(){
     var hoursMinutes = [setZeroValue(getCurrentTime().hours), setZeroValue(getCurrentTime().minutes)].join('');
     var percentage = (hoursMinutes / (beerOClockHour + beerOClockMin)) * 100 | 0;
-
     return percentage >= 100 ? '100%' : percentage + '%';
 }
-
 
 /**
  *
@@ -128,7 +123,6 @@ function howMuchPercent(){
  *
  */
 function BeerOclock(){
-
     /**
      * @type {Object}
      */
@@ -139,29 +133,27 @@ function BeerOclock(){
         notFridayButBeerTime: 'Time for beer! Have a nice evening and see you tomorrow.'
     };
 
-  // get current time stamp
-  var hoursMinutes = [setZeroValue(getCurrentTime().hours), setZeroValue(getCurrentTime().minutes)].join('');
-  var beerTime = beerOClockHour + beerOClockMin;
+    var hoursMinutes = [setZeroValue(getCurrentTime().hours), setZeroValue(getCurrentTime().minutes)].join('');
+    var beerTime = beerOClockHour + beerOClockMin;
 
-  if(hoursMinutes >= beerTime && actuallDay == 'Friday'){
-    SELECTOR_COUNTDOWN_CONTAINER.innerHTML = message.itsFridayAndBeerTime;
-  }else if (hoursMinutes >= beerTime && actuallDay != 'Friday') {
-    SELECTOR_COUNTDOWN_CONTAINER.innerHTML = message.notFridayButBeerTime;
-  }else if(hoursMinutes <= beerTime && actuallDay == 'Friday') {
-    SELECTOR_COUNTDOWN_CONTAINER.innerHTML = message.itsFriday;
-  }else if(hoursMinutes <= beerTime && actuallDay != 'Friday') {
-    SELECTOR_COUNTDOWN_CONTAINER.innerHTML = message.notFriday;
-  }
+    if (hoursMinutes >= beerTime && actuallDay == 'Friday'){
+        SELECTOR_COUNTDOWN_CONTAINER.innerHTML = message.itsFridayAndBeerTime;
+    } else if (hoursMinutes >= beerTime && actuallDay != 'Friday') {
+        SELECTOR_COUNTDOWN_CONTAINER.innerHTML = message.notFridayButBeerTime;
+    } else if(hoursMinutes <= beerTime && actuallDay == 'Friday') {
+        SELECTOR_COUNTDOWN_CONTAINER.innerHTML = message.itsFriday;
+    } else if(hoursMinutes <= beerTime && actuallDay != 'Friday') {
+        SELECTOR_COUNTDOWN_CONTAINER.innerHTML = message.notFriday;
+    }
 
+    var o = howMuchPercent().replace('%', '');
+    SELECTOR_BOTTLE_INACTIVE.style.height = (100 - o) + '%';
+    SELECTOR_BOTTLE_ACTIVE.style.height = howMuchPercent();
 
-  var o = howMuchPercent().replace('%', '');
-  SELECTOR_BOTTLE_INACTIVE.style.height = (100 - o) + '%';
-  SELECTOR_BOTTLE_ACTIVE.style.height = howMuchPercent();
+    SELECTOR_PERCENTAGE_CONTAINER.style.width = howMuchPercent();
+    //SELECTOR_PERCENTAGE_CONTAINER.innerHTML = howMuchPercent();
 
-  SELECTOR_PERCENTAGE_CONTAINER.style.width = howMuchPercent();
-  //SELECTOR_PERCENTAGE_CONTAINER.innerHTML = howMuchPercent();
-
-  setTimeout(BeerOclock, 1000);
+    setTimeout(BeerOclock, 1000);
 }
 
 //######################################################################
@@ -176,11 +168,11 @@ BeerOclock();
 //#########################################
 
 $(".hamburger-icon-wrapper").click(function() {
-  if ($(this).hasClass("isActiveIcon")) {
-    $(".slide-in-bar").removeClass("isActiveBar");
-    $(this).removeClass("isActiveIcon");
-  } else {
-    $(this).addClass("isActiveIcon");
-    $(".slide-in-bar").addClass("isActiveBar");
-  }
+    if ($(this).hasClass("isActiveIcon")) {
+        $(".slide-in-bar").removeClass("isActiveBar");
+        $(this).removeClass("isActiveIcon");
+    } else {
+        $(this).addClass("isActiveIcon");
+        $(".slide-in-bar").addClass("isActiveBar");
+    }
 });
