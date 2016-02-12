@@ -1,7 +1,7 @@
 "use strict"
 
 /**
- * @type {Object}
+ * @type {String}
  */
 var d = new Date();
 
@@ -9,7 +9,7 @@ var d = new Date();
  * @const
  * @type {String}
  */
-var beerOClockHour = '17';
+var beerOClockHour = '20';
 
 /**
  * @const
@@ -21,30 +21,30 @@ var beerOClockMin = '00';
  * @const
  * @type {String}
  */
-var SELECTOR_COUNTDOWN_CONTAINER = document.getElementById("js-content-wrapper__paragraph");
+var SELECTOR_COUNTDOWN_CONTAINER = document.getElementById('js-content-wrapper__paragraph');
 
 /**
  * @const
  * @type {String}
  */
-var SELECTOR_PERCENTAGE_CONTAINER = document.getElementById("js-percentage-wrapper__bar");
+var SELECTOR_PERCENTAGE_CONTAINER = document.getElementById('js-percentage-wrapper__bar');
 
 /**
  * @const
  * @type {String}
  */
-var SELECTOR_BOTTLE_INACTIVE = document.getElementById("js-content-wrapper_beer-bottle__grey");
+var SELECTOR_BOTTLE_INACTIVE = document.getElementById('js-content-wrapper_beer-bottle__grey');
 
 /**
  * @const
  * @type {String}
  */
-var SELECTOR_BOTTLE_ACTIVE = document.getElementById("js-content-wrapper_beer-bottle__color");
+var SELECTOR_BOTTLE_ACTIVE = document.getElementById('js-content-wrapper_beer-bottle__color');
 
 
 /**
  * @const
- * @type {Array}
+ * @type {Object}
  */
 var dayName = [
   'Sunday',
@@ -67,7 +67,8 @@ var actuallDay = dayName[d.getDay()];
  * Gets the current time and checks how much time
  * is left until BeerOclock.
  *
- * @type {Function, Object}
+ * @type {Object}
+ * @return {Object}
  *
  */
 function getCurrentTime(){
@@ -92,21 +93,24 @@ function getCurrentTime(){
  * Checks if the time (hours || minutes || seconds)
  * is < 10 and ads a 0 to it if its true
  *
- * @type {Function, undifiend}
+ * @param {value}
+ * @type {Object}
+ * @return {String}
  *
  */
-function setZeroValue(i) {
-    if(i < 10) {
-        i = "0" + i;
+function setZeroValue(value) {
+    if(value < 10) {
+        value = '0' + value;
     }
-    return i;
+    return value;
 }
 
 /**
  *
  * Checks how much percent is left unitl BeerOclock
  *
- * @type {Function, String}
+ * @type {Object}
+ * @return {String}
  *
  */
 function howMuchPercent(){
@@ -119,7 +123,8 @@ function howMuchPercent(){
  *
  * Checks how much percent is left unitl BeerOclock
  *
- * @type {Function, undifiend}
+ * @type {Object}
+ * @return {undefind}
  *
  */
 function BeerOclock(){
@@ -146,8 +151,7 @@ function BeerOclock(){
         SELECTOR_COUNTDOWN_CONTAINER.innerHTML = message.notFriday;
     }
 
-    var o = howMuchPercent().replace('%', '');
-    SELECTOR_BOTTLE_INACTIVE.style.height = (100 - o) + '%';
+    SELECTOR_BOTTLE_INACTIVE.style.height = (100 - (howMuchPercent().replace('%', ''))) + '%';
     SELECTOR_BOTTLE_ACTIVE.style.height = howMuchPercent();
 
     SELECTOR_PERCENTAGE_CONTAINER.style.width = howMuchPercent();
@@ -167,12 +171,12 @@ BeerOclock();
 // open/close on click logic
 //#########################################
 
-$(".hamburger-icon-wrapper").click(function() {
-    if ($(this).hasClass("isActiveIcon")) {
-        $(".slide-in-bar").removeClass("isActiveBar");
-        $(this).removeClass("isActiveIcon");
+$('.hamburger-icon-wrapper').click(function() {
+    if ($(this).hasClass('isActiveIcon')) {
+        $('.slide-in-bar').removeClass('isActiveBar');
+        $(this).removeClass('isActiveIcon');
     } else {
-        $(this).addClass("isActiveIcon");
-        $(".slide-in-bar").addClass("isActiveBar");
+        $(this).addClass('isActiveIcon');
+        $('.slide-in-bar').addClass('isActiveBar');
     }
 });
