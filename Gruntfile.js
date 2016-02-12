@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
-
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    auth: grunt.file.readJSON('.ftpauth'),
 
     //##############################################
     // Copy Assets
@@ -88,6 +88,30 @@ module.exports = function(grunt) {
       },
     },
 
+    //##############################################
+    // FTP Push
+    //##############################################
+    ftp_push: {
+      webserver: {
+        options: {
+		      authKey: "server",
+    	    host: '<%= auth.server.host %>',
+    	    dest: '<%= auth.server.dest %>',
+    	    port: 21
+      },
+      files: [
+        {
+          expand: true,
+          cwd: 'build/',
+          src: [
+            '**/*',
+            '!.DS_Store'
+          ]
+        }
+      ]
+    }
+  }
+
 });
 
   //##############################################
@@ -99,10 +123,14 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-ftp-push');
 
   //##############################################
   // Define Tasks
   //##############################################
 
   grunt.registerTask('default', 'Watches the project for changes, automatically builds them and runs a server.', ['clean', 'copy:build', 'sass', 'browserify', 'connect', 'watch' ]);
+  grunt.registerTask('build', 'Builds all the assets you need to put on the remote server.', ['clean', 'copy:build', 'sass', 'browserify']);
+  grunt.registerTask('release', 'Builds all the assets you need to put on the remote server.', ['clean', 'copy:build', 'sass', 'browserify', 'ftp_push',]);
+
 };

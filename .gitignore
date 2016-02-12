@@ -47,3 +47,4 @@ node_modules
 *.css
 *.css.map
 build/
+.ftpauth
