@@ -4,19 +4,45 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
 
     //##############################################
+    // Copy Assets
+    //##############################################
+
+      copy: {
+      build: {
+        files: [{
+          expand: true,
+          cwd: '',
+          src: [ '**/*', '!**/sass/**', '!**/node_modules/**', '!js/script.js', '!Gruntfile.js', '!package.json' ],
+          dest: 'build'
+        },
+        ],
+      },
+    },
+
+
+    //##############################################
+    // Copy Assets
+    //##############################################
+    clean: {
+      build: {
+        src: 'build'
+      }
+    },
+
+    //##############################################
     // Compile Sass
     //##############################################
     sass: {
       dist: {
         options: {
-          style: 'expanded',
-          loadPath: 'library/sass/'
+          style: 'compressed',
+          sourcemap: 'none'
         },
         files: [{
           expand: true,
           cwd: 'sass/',
           src: [ '**/*.sass' ],
-          dest: '',
+          dest: 'build/',
           ext: '.css'
         }
         ]
@@ -24,28 +50,28 @@ module.exports = function(grunt) {
     },
 
     //##############################################
-    // Minify Css
+    // Browserify JS
     //##############################################
-    cssmin: {
-      target: {
-        files: [{
-          expand: true,
-          cwd: '',
-          src: ['**/*.css', '!*.min.css'],
-          dest: '',
-          ext: '.css'
-        }]
+
+    browserify: {
+      dist: {
+        files: {
+          'build/js/bundle.js': 'js/**/*.js'
+        }
       }
     },
 
-
     //##############################################
-    // Watch Tasks / Sass & Jade
+    // Watch Tasks / Sass
     //##############################################
     watch: {
       sass: {
         files: '**/*.sass',
-        tasks: [ 'sass',  'cssmin' ]
+        tasks: [ 'sass' ]
+      },
+      js: {
+        files: 'js/**/*.js',
+        tasks: 'browserify'
       }
     },
 
@@ -56,7 +82,7 @@ module.exports = function(grunt) {
       server: {
         options: {
           port: 4000,
-          base: '',
+          base: 'build/',
           hostname: '*'
         }
       },
@@ -68,13 +94,15 @@ module.exports = function(grunt) {
   // Load Tasks
   //##############################################
   grunt.loadNpmTasks('grunt-contrib-sass');
-  grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-browserify');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-clean');
 
   //##############################################
   // Define Tasks
   //##############################################
 
-  grunt.registerTask('default', 'Watches the project for changes, automatically builds them and runs a server.', [ 'sass', 'cssmin', 'connect', 'watch' ]);
+  grunt.registerTask('default', 'Watches the project for changes, automatically builds them and runs a server.', ['clean', 'copy:build', 'sass', 'browserify', 'connect', 'watch' ]);
 };

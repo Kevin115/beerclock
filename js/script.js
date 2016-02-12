@@ -1,5 +1,6 @@
 "use strict"
 
+var $ = require('jquery');
 /**
  * @type {String}
  */
@@ -9,7 +10,7 @@ var d = new Date();
  * @const
  * @type {String}
  */
-var beerOClockHour = '20';
+var beerOClockHour = '22';
 
 /**
  * @const
