@@ -17,6 +17,15 @@ module.exports = function(grunt) {
         },
         ],
       },
+      html: {
+        files: [{
+          expand: true,
+          cwd: '',
+          src: [ 'index.html'],
+          dest: 'build/'
+        },
+        ],
+      },
     },
 
 
@@ -72,6 +81,10 @@ module.exports = function(grunt) {
       js: {
         files: 'js/**/*.js',
         tasks: 'browserify'
+      },
+      html: {
+        files: ['**/*.html', '!build/index.html'],
+        tasks: 'copy:html'
       }
     },
 
