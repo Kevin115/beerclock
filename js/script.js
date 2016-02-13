@@ -63,6 +63,19 @@ var dayName = [
  */
 var actuallDay = dayName[d.getDay()];
 
+var userInputHours = '';
+var userInputMinutes = '';
+
+function getInputs(){
+  beerOClockHour = document.getElementById('h').value;
+  beerOClockMin = document.getElementById('m').value;
+
+  if(beerOClockHour > 23 || beerOClockMin > 59) {
+    alert('zuhoch');
+    return false;
+  }
+}
+document.getElementById("save").addEventListener("click", getInputs, false);
 /**
  *
  * Gets the current time and checks how much time
@@ -84,6 +97,7 @@ function getCurrentTime(){
 
     beerOClockMin > minutes ? minutesLeft = setZeroValue((beerOClockMin - minutes) - 1)  : minutesLeft = setZeroValue( 59 - (minutes - beerOClockMin));
     beerOClockHour > hours ? hoursLeft = setZeroValue((beerOClockHour - hours) - 1) : hoursLeft = setZeroValue( 23 - (hours - beerOClockHour));
+
 
     var timeLeft = hoursLeft+':'+minutesLeft+':'+secondsLeft;
     return  {timeLeft:timeLeft, hours:hours, minutes:minutes};
