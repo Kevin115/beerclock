@@ -1,16 +1,21 @@
-"use strict"
+/* jshint browser: true */
+/* jshint node: true */
+
+"use strict";
 
 var $ = require('jquery');
+var d = document;
+
 /**
  * @type {String}
  */
-var d = new Date();
+var dateStamp = new Date();
 
 /**
  * @const
  * @type {String}
  */
-var beerOClockHour = '22';
+var beerOClockHour = '16';
 
 /**
  * @const
@@ -22,30 +27,29 @@ var beerOClockMin = '00';
  * @const
  * @type {String}
  */
-var SELECTOR_COUNTDOWN_CONTAINER = document.getElementById('js-content-wrapper__paragraph');
+var SELECTOR_COUNTDOWN_CONTAINER = d.getElementById('js-content-wrapper__paragraph');
 
 /**
  * @const
  * @type {String}
  */
-var SELECTOR_PERCENTAGE_CONTAINER = document.getElementById('js-percentage-wrapper__bar');
+var SELECTOR_PERCENTAGE_CONTAINER = d.getElementById('js-percentage-wrapper__bar');
 
 /**
  * @const
  * @type {String}
  */
-var SELECTOR_BOTTLE_INACTIVE = document.getElementById('js-content-wrapper_beer-bottle__grey');
+var SELECTOR_BOTTLE_INACTIVE = d.getElementById('js-content-wrapper_beer-bottle__grey');
 
 /**
  * @const
  * @type {String}
  */
-var SELECTOR_BOTTLE_ACTIVE = document.getElementById('js-content-wrapper_beer-bottle__color');
-
+var SELECTOR_BOTTLE_ACTIVE = d.getElementById('js-content-wrapper_beer-bottle__color');
 
 /**
  * @const
- * @type {Object}
+ * @type {Array}
  */
 var dayName = [
   'Sunday',
@@ -61,7 +65,24 @@ var dayName = [
  * @const
  * @type {String}
  */
-var actuallDay = dayName[d.getDay()];
+var actuallDay = dayName[dateStamp.getDay()];
+
+var userInputHours = '';
+var userInputMinutes = '';
+
+function getInputs(){
+  beerOClockHour = d.getElementById('h').value;
+  beerOClockMin = d.getElementById('m').value;
+
+  if(beerOClockHour >= 24 || beerOClockMin > 59) {
+    window.alert('zuhoch');
+    return false;
+  }
+
+  beerOclock();
+}
+
+d.getElementById("save").addEventListener("click", getInputs, false);
 
 /**
  *
@@ -72,21 +93,36 @@ var actuallDay = dayName[d.getDay()];
  * @return {Object}
  *
  */
-function getCurrentTime(){
+function checkTime(){
     var newDate = new Date();
-    var seconds = newDate.getSeconds();
-    var hours = newDate.getHours();
-    var minutes = newDate.getMinutes();
+    var time = {
+                hours: setZeroValue(newDate.getHours()),
+                minutes: setZeroValue(newDate.getMinutes())
+              };
 
     var minutesLeft;
     var hoursLeft;
-    var secondsLeft = setZeroValue(59 - seconds);
 
-    beerOClockMin > minutes ? minutesLeft = setZeroValue((beerOClockMin - minutes) - 1)  : minutesLeft = setZeroValue( 59 - (minutes - beerOClockMin));
-    beerOClockHour > hours ? hoursLeft = setZeroValue((beerOClockHour - hours) - 1) : hoursLeft = setZeroValue( 23 - (hours - beerOClockHour));
+    if (time.hours > beerOClockHour) {
+          return true;
+      } else {
+          hoursLeft = setZeroValue((beerOClockHour - time.hours));
+      }
 
-    var timeLeft = hoursLeft+':'+minutesLeft+':'+secondsLeft;
-    return  {timeLeft:timeLeft, hours:hours, minutes:minutes};
+    if (beerOClockMin > time.minutes) {
+          minutesLeft = setZeroValue((beerOClockMin - time.minutes));
+      } else if (beerOClockMin == time.minutes) {
+          minutesLeft = "00";
+          hoursLeft = setZeroValue((beerOClockHour - time.hours));
+      } else if (beerOClockMin == "00" || beerOClockMin < time.minutes) {
+          hoursLeft = setZeroValue((beerOClockHour - time.hours) - 1);
+          minutesLeft = setZeroValue(60 - (time.minutes - beerOClockMin));
+      } else {
+          minutesLeft = setZeroValue(60 - (time.minutes - beerOClockMin));
+      }
+
+    var timeLeft = hoursLeft+':'+minutesLeft;
+    return  {timeLeft:timeLeft, hours:time.hours, minutes:time.minutes};
 }
 
 /**
@@ -111,12 +147,12 @@ function setZeroValue(value) {
  * Checks how much percent is left unitl BeerOclock
  *
  * @type {Object}
- * @return {String}
  *
  */
 function howMuchPercent(){
-    var hoursMinutes = [setZeroValue(getCurrentTime().hours), setZeroValue(getCurrentTime().minutes)].join('');
+    var hoursMinutes = [checkTime().hours, checkTime().minutes].join('');
     var percentage = (hoursMinutes / (beerOClockHour + beerOClockMin)) * 100 | 0;
+
     return percentage >= 100 ? '100%' : percentage + '%';
 }
 
@@ -128,23 +164,23 @@ function howMuchPercent(){
  * @return {undefind}
  *
  */
-function BeerOclock(){
+function beerOclock(){
     /**
      * @type {Object}
      */
     var message = {
-        itsFriday: 'Get your beer game on, it is friday! <br />It is almost time for beer!!<br /> <span>' + getCurrentTime().timeLeft + '</span>',
-        notFriday: 'It is not friday, but who cares? Only '+ getCurrentTime().timeLeft + ' left until beer time!',
+        itsFriday: 'Get your beer game on, it is friday! <br />It is almost time for beer!!<br /> <span>' + checkTime().timeLeft + '</span>',
+        notFriday: 'It is not friday, but who cares? Only '+ checkTime().timeLeft + ' left until beer time!',
         itsFridayAndBeerTime: 'Time for beer! Have a nice weekend people!',
         notFridayButBeerTime: 'Time for beer! Have a nice evening and see you tomorrow.'
     };
 
-    var hoursMinutes = [setZeroValue(getCurrentTime().hours), setZeroValue(getCurrentTime().minutes)].join('');
+    var hoursMinutes = [setZeroValue(checkTime().hours), setZeroValue(checkTime().minutes)].join('');
     var beerTime = beerOClockHour + beerOClockMin;
 
-    if (hoursMinutes >= beerTime && actuallDay == 'Friday'){
+    if (checkTime() === true && actuallDay == 'Friday'){
         SELECTOR_COUNTDOWN_CONTAINER.innerHTML = message.itsFridayAndBeerTime;
-    } else if (hoursMinutes >= beerTime && actuallDay != 'Friday') {
+    } else if (checkTime() === true && actuallDay != 'Friday') {
         SELECTOR_COUNTDOWN_CONTAINER.innerHTML = message.notFridayButBeerTime;
     } else if(hoursMinutes <= beerTime && actuallDay == 'Friday') {
         SELECTOR_COUNTDOWN_CONTAINER.innerHTML = message.itsFriday;
@@ -156,16 +192,17 @@ function BeerOclock(){
     SELECTOR_BOTTLE_ACTIVE.style.height = howMuchPercent();
 
     SELECTOR_PERCENTAGE_CONTAINER.style.width = howMuchPercent();
-    //SELECTOR_PERCENTAGE_CONTAINER.innerHTML = howMuchPercent();
+    SELECTOR_PERCENTAGE_CONTAINER.innerHTML = howMuchPercent();
 
-    setTimeout(BeerOclock, 1000);
+    setTimeout(beerOclock, 10000);
+
 }
 
 //######################################################################
 // Start Functions onLoad
 //######################################################################
 
-BeerOclock();
+beerOclock();
 
 //#########################################
 // JUST FOR THE DEMO
