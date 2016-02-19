@@ -1,5 +1,5 @@
 body
-    background-color: #27ae60
+    background-color: #22313F
     font: 16px/1.6em 'Open Sans', sans-serif
     color: white
     margin: 0
@@ -55,11 +55,11 @@ body
     bottom: 0
     text-align: right
     color: white
-    background-color: darken(#27ae60, 10%)
+    background-color: lighten(#00B16A, 6%)
 
     .percentage-wrapper__bar
-        background: darken(#27ae60, 30%)
-        padding: 5px 15px
+        background: #00B16A
+        padding: 20px 15px 16px
         box-sizing: border-box
 
 //#########################################
@@ -120,7 +120,7 @@ $transitionSpeed: .5s
 // Dropwdown Bar
 .slide-in-bar
     width: 100%
-    background-color: rgba(0,0,0,1)
+    background: darken(#22313F, 7%)
     position: absolute
     transform: translate3d(0, -200px, 0)
     transition: all $transitionSpeed ease-in-out
@@ -130,6 +130,9 @@ $transitionSpeed: .5s
     // Dropdown Bar Navigation
     .slide-in-bar__nav
         margin: 0 auto
+        width: 100%
+        text-align: center
+        padding: 0
 
         li
             display: inline-block
@@ -155,3 +158,33 @@ $transitionSpeed: .5s
         &:before
             -webkit-transform: rotate(45deg)
             bottom: 0
+
+//#########################################
+// User Inputs
+//#########################################
+
+.user-input
+    padding: 8px
+    border-radius: 3px
+    border: none
+    background: white
+    color: #37474F
+    margin-left: 4px
+    font-size: 12px
+    width: 80px
+
+.user-input-save-btn
+    background: #00B16A
+    padding: 9px 27px
+    border-radius: 3px
+    border: none
+    color: white
+    text-transform: uppercase
+    cursor: pointer
+    transition: all .2s ease-in-out
+    margin-left: 25px
+
+    &:hover,
+    &:focus
+        background: darken(#00B16A, 5%)
+        transform: scale(.98)
