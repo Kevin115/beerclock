@@ -100,24 +100,15 @@ function checkTime(){
                 minutes: setZeroValue(newDate.getMinutes())
               };
 
-    var minutesLeft;
-    var hoursLeft;
-
-    if (time.hours > beerOClockHour) {
-          return true;
-      } else {
-          hoursLeft = setZeroValue((beerOClockHour - time.hours));
-      }
+    var minutesLeft = setZeroValue(60 - (time.minutes - beerOClockMin));
+    var hoursLeft = setZeroValue((beerOClockHour - time.hours));
 
     if (beerOClockMin > time.minutes) {
           minutesLeft = setZeroValue((beerOClockMin - time.minutes));
       } else if (beerOClockMin == time.minutes) {
           minutesLeft = "00";
-          hoursLeft = setZeroValue((beerOClockHour - time.hours));
       } else if (beerOClockMin == "00" || beerOClockMin < time.minutes) {
           hoursLeft = setZeroValue((beerOClockHour - time.hours) - 1);
-          minutesLeft = setZeroValue(60 - (time.minutes - beerOClockMin));
-      } else {
           minutesLeft = setZeroValue(60 - (time.minutes - beerOClockMin));
       }
 
@@ -178,9 +169,9 @@ function beerOclock(){
     var hoursMinutes = [setZeroValue(checkTime().hours), setZeroValue(checkTime().minutes)].join('');
     var beerTime = beerOClockHour + beerOClockMin;
 
-    if (checkTime() === true && actuallDay == 'Friday'){
+    if (hoursMinutes >= beerTime && actuallDay == 'Friday'){
         SELECTOR_COUNTDOWN_CONTAINER.innerHTML = message.itsFridayAndBeerTime;
-    } else if (checkTime() === true && actuallDay != 'Friday') {
+    } else if (hoursMinutes >= beerTime && actuallDay != 'Friday') {
         SELECTOR_COUNTDOWN_CONTAINER.innerHTML = message.notFridayButBeerTime;
     } else if(hoursMinutes <= beerTime && actuallDay == 'Friday') {
         SELECTOR_COUNTDOWN_CONTAINER.innerHTML = message.itsFriday;
