@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    auth: grunt.file.readJSON('.ftpauth'),
+    //auth: grunt.file.readJSON('.ftpauth'),
 
     //##############################################
     // Copy Assets
