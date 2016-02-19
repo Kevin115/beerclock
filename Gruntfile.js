@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    //auth: grunt.file.readJSON('.ftpauth'),
+    auth: grunt.file.readJSON('.ftpauth'),
 
     //##############################################
     // Copy Assets
@@ -71,6 +71,17 @@ module.exports = function(grunt) {
     },
 
     //##############################################
+    // Uglify
+    //##############################################
+    uglify: {
+      dist: {
+        files: {
+          'build/js/bundle.js': ['build/js/bundle.js']
+        }
+      }
+    },
+
+    //##############################################
     // Watch Tasks / Sass
     //##############################################
     watch: {
@@ -134,6 +145,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-browserify');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-ftp-push');
@@ -142,8 +154,8 @@ module.exports = function(grunt) {
   // Define Tasks
   //##############################################
 
-  grunt.registerTask('default', 'Watches the project for changes, automatically builds them and runs a server.', ['clean', 'copy:build', 'sass', 'browserify', 'connect', 'watch' ]);
-  grunt.registerTask('build', 'Builds all the assets you need to put on the remote server.', ['clean', 'copy:build', 'sass', 'browserify']);
-  grunt.registerTask('deploy', 'Builds all the assets you need to put on the remote server.', ['clean', 'copy:build', 'sass', 'browserify', 'ftp_push',]);
+  grunt.registerTask('default', 'Watches the project for changes, automatically builds them and runs a server.', ['clean', 'copy:build', 'sass', 'browserify', 'uglify', 'connect', 'watch' ]);
+  grunt.registerTask('build', 'Builds all the assets you need to put on the remote server.', ['clean', 'copy:build', 'sass', 'browserify', 'uglify']);
+  grunt.registerTask('deploy', 'Builds all the assets you need to put on the remote server.', ['clean', 'copy:build', 'sass', 'browserify', 'uglify', 'ftp_push',]);
 
 };
