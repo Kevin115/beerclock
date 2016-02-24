@@ -1,22 +1,24 @@
 /* jshint browser: true */
 /* jshint node: true */
 
+
 "use strict";
 
 var $ = require('jquery');
+var ytPlayer = require('./yt');
 var d = document;
 
 /**
  * @const
  * @type {String}
  */
-var beerOClockHour = '18';
+var beerOClockHour = '22';
 
 /**
  * @const
  * @type {String}
  */
-var beerOClockMin = '00';
+var beerOClockMin = '45';
 
 /**
  * @const
@@ -149,6 +151,7 @@ function howMuchPercent(){
     return percentage >= 100 ? '100%' : percentage + '%';
 }
 
+
 /**
  *
  * Checks how much percent is left unitl BeerOclock
@@ -158,7 +161,7 @@ function howMuchPercent(){
  *
  */
 function beerOclock(){
-
+    var t;
     var percentLeft = howMuchPercent();
     var timeToBeer = checkTime().timeLeft;
     var actuallFullTime = [checkTime().hours, checkTime().minutes].join('');
@@ -167,8 +170,10 @@ function beerOclock(){
 
     if (actuallFullTime >= userSetTime){
         SELECTOR_COUNTDOWN_CONTAINER.innerHTML = 'beer time baby';
-    } else if(actuallFullTime <= userSetTime)  {
+        ytPlayer.onIFrameReady();
+    } else if(actuallFullTime < userSetTime)  {
         SELECTOR_COUNTDOWN_CONTAINER.innerHTML = timeToBeer;
+        t = setTimeout(beerOclock, 10000);
     }
 
     SELECTOR_BOTTLE_INACTIVE.style.height = (100 - (percentLeft.replace('%', ''))) + '%';
@@ -176,9 +181,6 @@ function beerOclock(){
 
     SELECTOR_PERCENTAGE_CONTAINER.style.width = percentLeft;
     SELECTOR_PERCENTAGE_CONTAINER.innerHTML = percentLeft;
-
-    setTimeout(beerOclock, 10000);
-
 }
 
 //######################################################################
