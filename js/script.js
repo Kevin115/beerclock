@@ -7,15 +7,10 @@ var $ = require('jquery');
 var d = document;
 
 /**
- * @type {String}
- */
-var dateStamp = new Date();
-
-/**
  * @const
  * @type {String}
  */
-var beerOClockHour = '16';
+var beerOClockHour = '18';
 
 /**
  * @const
@@ -64,26 +59,6 @@ var SELECTOR_USER_INPUT_MINUTES = d.getElementById('js-user-input-minutes');
  * @type {Button}
  */
 var SELECTOR_USER_INPUT_SAVE_BUTTON = d.getElementById('js-user-input-save');
-
-/**
- * @const
- * @type {Array}
- */
-var dayName = [
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday'
-];
-
-/**
- * @const
- * @type {String}
- */
-var actuallDay = dayName[dateStamp.getDay()];
 
 function getInputs(){
 
@@ -186,30 +161,14 @@ function beerOclock(){
 
     var percentLeft = howMuchPercent();
     var timeToBeer = checkTime().timeLeft;
-    var actuallHours = checkTime().hours;
-    var actuallMinutes = checkTime().minutes;
+    var actuallFullTime = [checkTime().hours, checkTime().minutes].join('');
 
-    var actuallFullTime = [actuallHours, actuallMinutes].join('');
     var userSetTime = beerOClockHour + beerOClockMin;
 
-    /**
-     * @type {Object}
-     */
-    var message = {
-        itsFriday: 'Get your beer game on, it is friday! <br />It is almost time for beer!!<br /> <span>' + timeToBeer + '</span>',
-        notFriday: 'It is not friday, but who cares? Only '+ timeToBeer + ' left until beer time!',
-        itsFridayAndBeerTime: 'Time for beer! Have a nice weekend people!',
-        notFridayButBeerTime: 'Time for beer! Have a nice evening and see you tomorrow.'
-    };
-
-    if (actuallFullTime >= userSetTime && actuallDay == 'Friday'){
-        SELECTOR_COUNTDOWN_CONTAINER.innerHTML = message.itsFridayAndBeerTime;
-    } else if (actuallFullTime >= userSetTime && actuallDay != 'Friday') {
-        SELECTOR_COUNTDOWN_CONTAINER.innerHTML = message.notFridayButBeerTime;
-    } else if(actuallFullTime <= userSetTime && actuallDay == 'Friday') {
-        SELECTOR_COUNTDOWN_CONTAINER.innerHTML = message.itsFriday;
-    } else if(actuallFullTime <= userSetTime && actuallDay != 'Friday') {
-        SELECTOR_COUNTDOWN_CONTAINER.innerHTML = message.notFriday;
+    if (actuallFullTime >= userSetTime){
+        SELECTOR_COUNTDOWN_CONTAINER.innerHTML = 'beer time baby';
+    } else if(actuallFullTime <= userSetTime)  {
+        SELECTOR_COUNTDOWN_CONTAINER.innerHTML = timeToBeer;
     }
 
     SELECTOR_BOTTLE_INACTIVE.style.height = (100 - (percentLeft.replace('%', ''))) + '%';
